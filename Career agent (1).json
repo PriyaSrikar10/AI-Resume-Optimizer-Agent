@@ -265,7 +265,7 @@
           "parameters": [
             {
               "name": "key",
-              "value": "AQ.Ab8RN6JcjyNN2D0TEL3n-ErZUgpYNNLyx7Wu22rRvjn_z4ufhg"
+              "value":"your gemini api key"
             }
           ]
         },
@@ -292,7 +292,8 @@
           "parameters": [
             {
               "name": "key",
-              "value": "AQ.Ab8RN6JcjyNN2D0TEL3n-ErZUgpYNNLyx7Wu22rRvjn_z4ufhg"
+              "value": "your gemini api key"
+            "
             }
           ]
         },
