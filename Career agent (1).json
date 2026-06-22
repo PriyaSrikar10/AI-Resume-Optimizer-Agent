@@ -1,0 +1,535 @@
+{
+  "name": "Career agent",
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -992,
+        -976
+      ],
+      "id": "003516b8-aaa7-42fe-a67e-bfc6a5ce7bd2",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "10QptpkhA9WoIDMZngaoFrmglgsBYTyCbSp_HyyemwMk",
+          "mode": "list",
+          "cachedResultName": "Career copilot tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10QptpkhA9WoIDMZngaoFrmglgsBYTyCbSp_HyyemwMk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1324844792,
+          "mode": "list",
+          "cachedResultName": "Master_Resume",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10QptpkhA9WoIDMZngaoFrmglgsBYTyCbSp_HyyemwMk/edit#gid=1324844792"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1312,
+        -1168
+      ],
+      "id": "c9d009e3-9386-4f69-9c99-8fef9e116e4c",
+      "name": "Master profile",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uZjmcOUZ9raFCWeJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "10QptpkhA9WoIDMZngaoFrmglgsBYTyCbSp_HyyemwMk",
+          "mode": "list",
+          "cachedResultName": "Career copilot tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10QptpkhA9WoIDMZngaoFrmglgsBYTyCbSp_HyyemwMk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 413915307,
+          "mode": "list",
+          "cachedResultName": "JD",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10QptpkhA9WoIDMZngaoFrmglgsBYTyCbSp_HyyemwMk/edit#gid=413915307"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1296,
+        -832
+      ],
+      "id": "bc8f8ec1-3608-4491-9299-ea876944794f",
+      "name": "Jd",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uZjmcOUZ9raFCWeJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1664,
+        -1104
+      ],
+      "id": "13c36e57-50ba-46c0-ba9f-5ee3063c98d9",
+      "name": "Trigger "
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0a33d1da-00d6-4a21-90fe-0b66f53ca290",
+              "name": "ATS_score",
+              "value": "={{$json.ATS_Score}}\n\n",
+              "type": "string"
+            },
+            {
+              "id": "deb11b98-8080-452b-9c79-a1e41a35a982",
+              "name": "Matching_Skills",
+              "value": "={{$json.Matching_Skills}}",
+              "type": "string"
+            },
+            {
+              "id": "00716319-1a1d-4112-b0bc-5105661c3a78",
+              "name": "Missing_Skills",
+              "value": "={{$json.Missing_Skills}}",
+              "type": "string"
+            },
+            {
+              "id": "38a1457e-46b3-441d-bbee-928306fdd5ef",
+              "name": "Resume_Suggestions",
+              "value": "={{$json.Resume_Suggestions}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -32,
+        -1008
+      ],
+      "id": "13379277-db91-4ccc-8897-9269e9786ed5",
+      "name": "ATS clean format "
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $input.first().json.candidates[0].content.parts[0].text;\n\nconst clean = text\n.replace(/```json/g,'')\n.replace(/```/g,'')\n.trim();\n\nconst data = JSON.parse(clean);\n\nreturn [{\n  json:{\n    ATS_Score:data.ATS_Score,\n    Matching_Skills:data.Matching_Skills,\n    Missing_Skills:data.Missing_Skills,\n    Resume_Suggestions:data.Resume_Suggestions\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -272,
+        -1040
+      ],
+      "id": "533a4cd1-cd98-4447-8097-35c69f6cabe6",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "10QptpkhA9WoIDMZngaoFrmglgsBYTyCbSp_HyyemwMk",
+          "mode": "list",
+          "cachedResultName": "Career copilot tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10QptpkhA9WoIDMZngaoFrmglgsBYTyCbSp_HyyemwMk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 909329412,
+          "mode": "list",
+          "cachedResultName": "Results ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10QptpkhA9WoIDMZngaoFrmglgsBYTyCbSp_HyyemwMk/edit#gid=909329412"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ATS_Score": "={{$json.ATS_score}}",
+            "Matching_Skills": "={{$json.Matching_Skills}}",
+            "Missing_Skills": "={{$json.Missing_Skills}}",
+            "Resume_Suggestions": "={{$json.Resume_Suggestions}}",
+            "Optimized_Resume": "={{$json.Optimized_Resume}}",
+            "Interview_QA": "={{$json.Interview_QA}}"
+          },
+          "matchingColumns": [
+            "ATS_Score"
+          ],
+          "schema": [
+            {
+              "id": "ATS_Score",
+              "displayName": "ATS_Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Matching_Skills",
+              "displayName": "Matching_Skills",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Missing_Skills",
+              "displayName": "Missing_Skills",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Resume_Suggestions",
+              "displayName": "Resume_Suggestions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Optimized_Resume",
+              "displayName": "Optimized_Resume",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Interview_QA",
+              "displayName": "Interview_QA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        592,
+        -848
+      ],
+      "id": "214cadb6-004f-4d68-a8e6-a71bf78374a6",
+      "name": "Results sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "uZjmcOUZ9raFCWeJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AQ.Ab8RN6JcjyNN2D0TEL3n-ErZUgpYNNLyx7Wu22rRvjn_z4ufhg"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"You are an ATS Resume Analyzer. Compare the candidate profile with the job description. Calculate ATS Score, Matching Skills, Missing Skills and Resume Suggestions. Return ONLY valid JSON. Return exactly this format: {\\\"ATS_Score\\\":\\\"\\\",\\\"Matching_Skills\\\":\\\"\\\",\\\"Missing_Skills\\\":\\\"\\\",\\\"Resume_Suggestions\\\":\\\"\\\"}. Candidate Name: {{$json.Name}} Current Role: {{$json.Current_Role}} Experience: {{$json.Experience_Years}} Skills: {{$json.Skills}} Certifications: {{$json.Certifications}} Key Achievements: {{$json.Key_Achievements}} Job Description: {{$json.JD}}\"\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -608,
+        -1104
+      ],
+      "id": "5af4cfea-28e2-41f5-9596-26371b7f8ae0",
+      "name": "ATS_HTTPS"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AQ.Ab8RN6JcjyNN2D0TEL3n-ErZUgpYNNLyx7Wu22rRvjn_z4ufhg"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"You are an expert Resume Writer and Interview Coach. Create an ATS optimized resume and 10 interview questions with answers based on the candidate profile and job description. Return ONLY valid JSON. Do not use markdown. Do not use code blocks. Return exactly this structure: {\\\"Optimized_Resume\\\":\\\"\\\",\\\"Interview_QA\\\":\\\"\\\"}. Candidate Name: {{$json.Name}} Current Role: {{$json.Current_Role}} Experience: {{$json.Experience_Years}} Skills: {{$json.Skills}} Certifications: {{$json.Certifications}} Key Achievements: {{$json.Key_Achievements}} Job Description: {{$json.JD}}\"\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -592,
+        -752
+      ],
+      "id": "28bd68a5-0cd5-4125-8ecc-b06f6497fd43",
+      "name": "Resume_HTTPS"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "54e36752-7412-423d-bf4a-76e451968009",
+              "name": "Optimized_Resume",
+              "value": "={{$json.Optimized_Resume}}",
+              "type": "string"
+            },
+            {
+              "id": "2dc8d94f-b583-454e-a46a-7d81af060dc7",
+              "name": "Interview_QA",
+              "value": "={{$json.Interview_QA}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        -656
+      ],
+      "id": "06c1c513-f36d-4aef-8294-90171de53184",
+      "name": "Resume_Optimization"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $input.first().json.candidates[0].content.parts[0].text;\n\nconst clean = text\n.replace(/```json/g,'')\n.replace(/```/g,'')\n.trim();\n\nconst data = JSON.parse(clean);\n\nreturn [{\n  json:{\n    Optimized_Resume:data.Optimized_Resume,\n    Interview_QA:data.Interview_QA\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -144,
+        -704
+      ],
+      "id": "eb45c4f8-4ac8-4dbc-a5c5-46a4e15847a6",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {
+          "includeUnpaired": true
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        208,
+        -832
+      ],
+      "id": "31520974-682e-440e-8772-c0efc3822c73",
+      "name": "ATS and Resume plus interview"
+    }
+  ],
+  "pinData": {
+    "Trigger ": [
+      {
+        "json": {},
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "ATS_HTTPS",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Resume_HTTPS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Master profile": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jd": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Trigger ": {
+      "main": [
+        [
+          {
+            "node": "Master profile",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Jd",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ATS clean format ": {
+      "main": [
+        [
+          {
+            "node": "ATS and Resume plus interview",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "ATS clean format ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ATS_HTTPS": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resume_HTTPS": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resume_Optimization": {
+      "main": [
+        [
+          {
+            "node": "ATS and Resume plus interview",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Resume_Optimization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ATS and Resume plus interview": {
+      "main": [
+        [
+          {
+            "node": "Results sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Results sheet": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "41c49c38-4a92-4996-b32e-e4465308cdaa",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7010fd82961d7df3ccab673a93325bbd31759763da230c7d68ae3c294fe0d4c7"
+  },
+  "nodeGroups": [],
+  "id": "VqgUvbkKiB99YWXA",
+  "tags": []
+}
